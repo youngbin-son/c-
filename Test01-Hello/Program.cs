@@ -62,11 +62,23 @@ namespace Test01_Hello
     }
     class Test01    // main class
     {
+        delegate void cbTest();
+        void f1() { WriteLine("delegate Test 01");}
+        void f2() { WriteLine("delegate Test 02");}
+        void f3() { WriteLine("delegate Test 03");}
+        void Func_DelegateTest()
+        {
+            cbTest cb1;
+            cb1 = new cbTest(f1); cb1();
+            cb1 = new cbTest(f2); cb1();
+            cb1 = new cbTest(f3); cb1();
+          
+        }
         public Test01()
         {
             //Console.WriteLine("Hello world...!");
         }
-        public void Func1()
+        public void Func_PointTest()
         {
             Point p1 = new Point(10,20);
             Point p2 = new Point(30,40);
@@ -77,25 +89,25 @@ namespace Test01_Hello
             string s3 = s1 + s2;
             WriteLine(s3);
         }
-        public void MainFunc()
+        public void Func_ReadWrite()
         {
             //Func1();return;
             int i = 10, j = 20;
             var v = i * 10;
             double d = 1.5, e = 3.1;
             Object o = i + 1;
-            WriteLine("Hello World({0},{1},{4},{5})\nMain Function({2},{3})",i,j,d,e,o,v);  // printf 함수와 동일
+            WriteLine("Hello World({0},{1},{4},{5})\nMain Function({2},{3})", i, j, d, e, o, v);  // printf 함수와 동일
             o = d + 0.5;
             //v = d * 10; //오류  var v = i * 10에서 v의 자료형은 int로 고정됨 
             v = j * 10;
             int k = sizeof(int);
-            WriteLine("Hello World({0},{1})\nMain Function({2},{3},{4})",i,j,d,e,o);  // printf 함수와 동일
-            WriteLine("i:{0}, j:{1}, d:{2}, e:{3}, o:{4}",i,j,d,e,o);
+            WriteLine("Hello World({0},{1})\nMain Function({2},{3},{4})", i, j, d, e, o);  // printf 함수와 동일
+            WriteLine("i:{0}, j:{1}, d:{2}, e:{3}, o:{4}", i, j, d, e, o);
             WriteLine($"i:{sizeof(int)}, d:{sizeof(double)}");
 
             int[] arr = new int[i];
-            for(int i1 = 0; i1 < 10; i1++) arr[i1] = i1;
-            
+            for (int i1 = 0; i1 < 10; i1++) arr[i1] = i1;
+
             //MyLib my = new MyLib(); 
             //while (true)
             {
@@ -124,5 +136,95 @@ namespace Test01_Hello
                 }
             }
         }
+        public const int v = 0;
+        int ArrSum(int[] arr)   // int 배열 요소의 합
+        {
+            int sum = 0;
+            for (int i = 0; i < arr.Length; i++)
+                sum += arr[i];
+            return sum;
+        }
+        void PrintArr<T>(T[]arr)
+        {
+            int i = 0;
+            foreach (T a in arr)
+            {
+                Write($"[{i++}]{a}"); 
+            }
+        }
+        void InitArr(out int[] arr, int n)
+        {
+            arr = new int[n];
+            foreach (int a in arr) arr[a] = a;
+        }
+        void CallArr(int[] arr)
+        {
+            arr[2] = 100;
+            arr[4] = 200;
+            
+        }
+        public void Func_ArrayTest()
+        {
+            int[] arr;// = new int[10];
+            int[] arr1 = { 0, 1, 2, 3, 4 };
+            double[] drr = { 0.1, 0.2, 0.3, 0.4, 0.5 };
+            Point[] parr = new Point[10];
+            int[,] brr = { { 10, 11, 12, 13, 14 }, { 20, 21, 22, 23, 24 } };
+            int[][] crr =
+            {
+               new int [] {1,2,3,4,5},
+               new int [] {6,7,8,9,10}
+            };
+            //WriteLine($"{ArrSum(drr)}");
+  
+            InitArr(out arr, 10);
+            for(int i =0; i < 10; i++)
+            {
+                Write($"arr[{i}]:{arr[i]}  ");
+            }
+            WriteLine("");
+            CallArr(arr);
+            Array.Copy(crr[0], arr, 5);
+            for (int i = 0; i < 10; i++)
+            {
+                Write($"arr[{i}]:{arr[i]}\n");
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                for(int j = 0; j < crr[i].Length; j++)
+                {
+                    Write($"crr[{i},{j}]:{crr[i][j]} ");
+                }
+                WriteLine("");
+            }
+                WriteLine("");
+
+            crr[0].CopyTo(arr, 0);
+            for (int i = 0; i < 10; i++)
+            {
+                Write($"arr[{i}]:{arr[i]}\n");
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                for(int j = 0; j < 5; j++)
+                {
+                    Write($"brr[{i},{j}]:{brr[i, j]}  ");
+                }
+                WriteLine("");
+            }
+
+            WriteLine($"Sum of [arr] : {ArrSum(arr1)}");
+            WriteLine($"Length of [arr] : {arr.Length}");
+            arr.Append<int>(1);
+            WriteLine($"Length of [arr] : {arr.Length}");
+        }
+        public void MainFunc()  //주 진입점 (실행 함수)
+        {
+            //Func_PointTest();return;
+            //Func_ReadWrite();return;
+            Func_DelegateTest();return;
+        }   
     }
 }
